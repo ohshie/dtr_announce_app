@@ -1,10 +1,11 @@
 ﻿using System.Drawing;
+using Dtr_Announce_App.Business;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.Extensions.DependencyInjection;
 using PhotinoNET;
 using Serilog;
 
-namespace HelloPhotino.NET
+namespace Dtr_Announce_App
 {
     class Program
     {
@@ -16,7 +17,10 @@ namespace HelloPhotino.NET
             app.UseCors("CorsPolicy");
 
             app.MapControllers();
-
+            
+            app.UseSwagger();
+            app.UseSwaggerUI();
+            
             app.RunAsync();
             
             // Window title declared here for visibility
@@ -39,6 +43,11 @@ namespace HelloPhotino.NET
         {
             var builder = WebApplication.CreateBuilder(args);
 
+            builder.Services.AddTransient<VkVideoUrlFetcher>();
+            builder.Services.AddTransient<DateConverter>();
+            builder.Services.AddTransient<AnnounceCreator>();
+            builder.Services.AddTransient<AnnouncePoster>();
+            
             Log.Logger = new LoggerConfiguration()
                 .MinimumLevel.Information()
                 .Enrich.FromLogContext()
@@ -50,7 +59,7 @@ namespace HelloPhotino.NET
             builder.Services.AddCors(options =>
             {
                 options.AddPolicy("CorsPolicy",
-                    configurePolicy => configurePolicy.WithOrigins("http://localhost:5000")
+                    configurePolicy => configurePolicy.WithOrigins("file://", "http://localhost:5173")
                         .AllowAnyMethod()
                         .AllowAnyHeader()
                         .AllowCredentials());
@@ -58,6 +67,9 @@ namespace HelloPhotino.NET
 
             builder.Services.AddHttpClient();
             builder.Services.AddSerilog();
+            
+            builder.Services.AddEndpointsApiExplorer();
+            builder.Services.AddSwaggerGen();
             
             return builder.Build();
         }
