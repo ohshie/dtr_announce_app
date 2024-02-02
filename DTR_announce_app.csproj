@@ -10,6 +10,19 @@
     <RootNamespace>Dtr_Announce_App</RootNamespace>
   </PropertyGroup>
 
+  <PropertyGroup>
+    <CFBundleShortVersionString>1</CFBundleShortVersionString>
+    <CFBundleVersion>1.0</CFBundleVersion>
+    <CFBundleDisplayName>AHDTR</CFBundleDisplayName>
+    <CFBundleName>AHDTR</CFBundleName>
+    <CFBundleExecutable>DTR_announce_app</CFBundleExecutable>
+    <CFBundleIdentifier>com.ahdtr.macos</CFBundleIdentifier>
+  </PropertyGroup>
+  
+  <PropertyGroup>
+    <UseAppHost>true</UseAppHost>
+  </PropertyGroup>
+
   <ItemGroup>
     <Compile Remove="wwwroot\**" />
     <None Update="wwwroot\**">
